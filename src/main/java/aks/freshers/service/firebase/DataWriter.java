@@ -18,6 +18,5 @@ public class DataWriter {
         DatabaseReference newItemRef = ref.push();
         
         newItemRef.setValueAsync(item); 
-        System.out.println("200");
     }
 }
