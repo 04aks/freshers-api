@@ -3,17 +3,17 @@ package aks.freshers.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import aks.freshers.model.Item;
+import aks.freshers.model.Item.ItemType;
 import aks.freshers.service.FrService;
-import aks.freshers.service.firebase.FirebaseInit;
 import aks.freshers.service.firebase.ICallback;
 
 @RestController
@@ -27,10 +27,12 @@ public class FrController {
     }
 
     @GetMapping("/get")
-    public CompletableFuture<List<Item>> getItems(){
+    public CompletableFuture<List<Item>> getItems(@RequestParam(required = true) String type){
         
+        // Param can be "swords", "bows" or "pants".
+
         CompletableFuture<List<Item>> future = new CompletableFuture<>();
-        frService.readData(new ICallback() {
+        frService.readData(type, new ICallback() {
             @Override
             public void callback(List<Item> itemsList) {
                 future.complete(itemsList != null ? itemsList : new ArrayList<>());
@@ -42,7 +44,7 @@ public class FrController {
 
     @GetMapping("/test")
     public String test(){
-        return FirebaseInit.getInstance().toString();
+        return ItemType.fromValue(5).toString().toLowerCase().contains("pants") ? "yes" : "no";
     }
 
     @PostMapping("/add")

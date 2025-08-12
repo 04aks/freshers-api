@@ -19,9 +19,10 @@ public class DataReader {
         firebaseDatabase = FirebaseInit.getInstance();
     }
 
-    public void readData(ICallback iCallback){
+    public void readData(String type, ICallback iCallback){
+        
         List<Item> itemsList = new ArrayList<>();
-        DatabaseReference ref = firebaseDatabase.getReference("Items");
+        DatabaseReference ref = firebaseDatabase.getReference("items/" + type);
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override

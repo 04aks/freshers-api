@@ -22,8 +22,8 @@ public class FrService {
         dataWriter.writeData(item);
     }
 
-    public void readData(ICallback iCallback){
-        dataReader.readData(new ICallback() {
+    public void readData(String type, ICallback iCallback){
+        dataReader.readData(type, new ICallback() {
 
             @Override
             public void callback(List<Item> itemsList) {
